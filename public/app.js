@@ -45,6 +45,7 @@
   const priceCentsEl = document.getElementById('priceCents');
   const pricePerEl = document.getElementById('pricePer');
   const purchaseRadios = document.querySelectorAll('input[name="purchaseType"]');
+  const shipCountryEl = document.getElementById('shipCountry');
 
   // Price display updater
   const updatePriceUI = () => {
@@ -65,13 +66,16 @@
       buyBtn.disabled = true;
       buyBtn.textContent = 'Redirecting…';
       try{
+        if (shipCountryEl && !shipCountryEl.value) {
+          throw new Error('Please select a shipping country');
+        }
         const quantity = Math.max(1, Math.min(10, parseInt(qtyEl?.value || '1', 10) || 1));
         const sel = document.querySelector('input[name="purchaseType"]:checked');
         const purchaseType = sel ? sel.value : 'one-time';
         const res = await fetch('/create-checkout-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ quantity, purchaseType })
+          body: JSON.stringify({ quantity, purchaseType, shippingCountry: shipCountryEl?.value || undefined })
         });
         if(!res.ok){
           const err = await res.json().catch(()=>({error:'Network error'}));

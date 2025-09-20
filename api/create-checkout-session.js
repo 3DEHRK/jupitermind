@@ -1,4 +1,5 @@
 const Stripe = require('stripe');
+const { buildShippingOptions, supportedCountries } = require('../shipping/rates');
 
 const stripeSecret = process.env.STRIPE_SECRET_KEY || '';
 const stripe = stripeSecret ? new Stripe(stripeSecret, { apiVersion: '2024-06-20' }) : null;
@@ -14,7 +15,7 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Stripe not configured. Set STRIPE_SECRET_KEY.' });
     }
 
-    const { quantity = 1, purchaseType = 'one-time' } = req.body || {};
+  const { quantity = 1, purchaseType = 'one-time', shippingCountry } = req.body || {};
     const isSub = purchaseType === 'subscription';
     const unitAmount = isSub ? 9900 : 10900; // cents
 
@@ -22,13 +23,25 @@ module.exports = async (req, res) => {
     const host = req.headers['x-forwarded-host'] || req.headers.host;
     const baseUrl = process.env.PUBLIC_URL || `${protocol}://${host}`;
 
+    const defaultAllowed = supportedCountries();
+    const envCountries = (process.env.SHIPPING_ALLOWED_COUNTRIES || '').trim();
+    const envAllowed = envCountries ? envCountries.split(/[ ,\n\t]+/).filter(Boolean) : defaultAllowed;
+    const selectedCountry = String(shippingCountry || '').toUpperCase();
+    const allowedCountries = selectedCountry && defaultAllowed.includes(selectedCountry)
+      ? [selectedCountry]
+      : envAllowed;
+
+  const sessionCurrency = 'usd';
+  const qty = Math.max(1, Math.min(10, parseInt(quantity, 10) || 1));
+  const subtotalCents = unitAmount * qty;
+  const shipping_options = shippingCountry ? buildShippingOptions(String(shippingCountry).toUpperCase(), sessionCurrency, subtotalCents) : [];
     const session = await stripe.checkout.sessions.create({
       mode: isSub ? 'subscription' : 'payment',
       payment_method_types: ['card'],
       line_items: [
         {
           price_data: {
-            currency: 'usd',
+            currency: sessionCurrency,
             product_data: {
               name: 'JupiterMind Nootropic',
               description: isSub ? 'Monthly subscription' : 'One-time purchase',
@@ -37,11 +50,12 @@ module.exports = async (req, res) => {
             unit_amount: unitAmount,
             recurring: isSub ? { interval: 'month' } : undefined
           },
-          quantity: Math.max(1, Math.min(10, parseInt(quantity, 10) || 1)),
+          quantity: qty,
         }
       ],
       allow_promotion_codes: true,
-      shipping_address_collection: { allowed_countries: ['US', 'CA', 'DE', 'GB', 'AU'] },
+      shipping_address_collection: { allowed_countries: allowedCountries },
+      shipping_options,
       success_url: `${baseUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/cancel.html`
     });

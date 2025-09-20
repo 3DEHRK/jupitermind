@@ -108,6 +108,8 @@ body{
 .toggle-option .price-label{color:var(--text)}
 .pc-qty{display:flex; align-items:center; gap:10px; margin:10px 0 16px}
 #qty{width:84px; padding:10px; border-radius:12px; background:#0c1320; color:var(--text); border:1px solid rgba(255,255,255,.1)}
+.pc-country{display:flex; align-items:center; gap:10px; margin:10px 0 16px}
+#shipCountry{flex:1; padding:10px; border-radius:12px; background:#0c1320; color:var(--text); border:1px solid rgba(255,255,255,.1)}
 .pay-logos{display:flex; gap:10px; align-items:center; margin-top:12px; opacity:.8}
 .pay-logos img{height:22px; filter: invert(1) opacity(.8)}
 
