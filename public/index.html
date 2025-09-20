@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JupiterMind — Elevate Your Focus</title>
+  <meta name="description" content="Modern premium nootropic. Sharper focus, calm energy. Secure checkout with Stripe." />
+  <script>document.documentElement.classList.remove('no-js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232a2a2a'/><circle cx='50' cy='50' r='35' fill='%23b08968'/></svg>">
+</head>
+<body>
+  <header class="site-header" data-open="false">
+    <div class="container header-inner">
+      <button id="menuToggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="#top" class="brand" aria-label="JupiterMind home">JupiterMind</a>
+      <nav id="siteNav" class="nav-drawer" aria-label="Primary">
+        <a href="#benefits">Benefits</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#impressum">Impressum</a>
+        <a class="nav-cta" href="#pricing">Buy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="container hero-inner">
+        <figure class="hero-visual" aria-hidden="true">
+          <img
+            src="https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=1200&auto=format&fit=crop"
+            srcset="
+              https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=600&auto=format&fit=crop 600w,
+              https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=900&auto=format&fit=crop 900w,
+              https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=1200&auto=format&fit=crop 1200w
+            "
+            sizes="(max-width: 600px) 90vw, (max-width: 1024px) 50vw, 520px"
+            alt="Jupiter in space" decoding="async" fetchpriority="high"/>
+        </figure>
+        <div class="hero-copy">
+          <h1>Welcome aboard</h1>
+          <p>Focus deeper. Move calmer. A premium nootropic for people who build, learn, and lead.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#pricing">Get JupiterMind</a>
+            <a class="btn btn-ghost" href="#benefits">See benefits</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="section" id="benefits">
+      <div class="container">
+        <h2>Why JupiterMind?</h2>
+        <p class="section-sub">Clinically studied ingredients to support cognition without the crash.</p>
+        <div class="grid benefits">
+        <div class="card">
+          <div class="card-ico">🧠</div>
+          <h3>Sharper Focus</h3>
+          <p>Lock in on demanding tasks with sustained attention and fewer distractions.</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">⚡</div>
+          <h3>Clean Energy</h3>
+          <p>Feel steady, jitter-free energy that powers your day without a hard come-down.</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">🌙</div>
+          <h3>Calm Clarity</h3>
+          <p>Reduce mental noise and anxiety while keeping alertness high.</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">🧪</div>
+          <h3>Premium Formula</h3>
+          <p>Thoughtfully dosed with L-Theanine, Citicoline, Rhodiola, and essential B-vitamins.</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">🌿</div>
+          <h3>Transparent Sourcing</h3>
+          <p>GMP-manufactured, third-party tested, and fully labeled.</p>
+        </div>
+        <div class="card">
+          <div class="card-ico">🚀</div>
+          <h3>Build Momentum</h3>
+          <p>Turn intentions into output with routines that compound over time.</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section section-alt" id="pricing">
+      <div class="container pricing">
+        <div class="price-card">
+          <div class="pc-head">
+            <h2>JupiterMind</h2>
+            <p>60 capsules · 30 servings</p>
+          </div>
+          <div class="pc-price" id="displayPrice" data-one-time="10900" data-subscription="9900">
+            <span class="currency">$</span>
+            <span class="amount" id="priceAmount">109</span>
+            <span class="cents" id="priceCents">.00</span>
+            <span class="per" id="pricePer"></span>
+          </div>
+          <div class="purchase-toggle" role="radiogroup" aria-label="Purchase options">
+            <label class="toggle-option">
+              <input type="radio" name="purchaseType" value="one-time" checked>
+              <span>One-time</span>
+              <strong class="price-label">$109.00</strong>
+            </label>
+            <label class="toggle-option">
+              <input type="radio" name="purchaseType" value="subscription">
+              <span>Subscribe</span>
+              <strong class="price-label">$99.00/mo</strong>
+            </label>
+          </div>
+          <ul class="pc-list">
+            <li>Free shipping over $60</li>
+            <li>30-day money-back guarantee</li>
+            <li>Secure Stripe Checkout</li>
+          </ul>
+          <div class="pc-qty">
+            <label for="qty">Quantity</label>
+            <input id="qty" type="number" value="1" min="1" max="10" />
+          </div>
+          <button id="buyBtn" class="btn btn-primary btn-xl">Buy with Stripe</button>
+          <div class="pay-logos" aria-hidden="true">
+            <img loading="lazy" alt="Stripe" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/stripe.svg" />
+            <img loading="lazy" alt="Visa" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/visa.svg" />
+            <img loading="lazy" alt="Mastercard" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mastercard.svg" />
+            <img loading="lazy" alt="Apple Pay" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/applepay.svg" />
+            <img loading="lazy" alt="Google Pay" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="callout">
+          <h3>How does JupiterMind compare to popular products (e.g., AlphaBrain)?</h3>
+          <p>
+            We keep the formula tight, transparent, and focused on well‑studied ingredients at effective doses.
+            Many stacks add a long list of extras or proprietary blends that can sound impressive but don’t always move the needle for most people.
+          </p>
+          <p>
+            Our approach: no filler, no proprietary blends, and no hype—just ingredients with a strong rationale at clear amounts.
+            Everyone responds differently, though. If certain additions (like choline or L‑tyrosine) work well for you, you can stack them alongside JupiterMind.
+          </p>
+          <p class="muted small">This information is educational, not medical advice. Talk to your healthcare provider before starting any supplement.</p>
+        </div>
+        <h2>Frequently asked questions</h2>
+        <div class="faq">
+        <details>
+          <summary>How should I take JupiterMind?</summary>
+          <p>Take 2 capsules with water in the morning. Avoid taking within 6 hours of bedtime.</p>
+        </details>
+        <details>
+          <summary>Is it safe?</summary>
+          <p>Formulated with commonly used ingredients and manufactured in a GMP facility. Consult your physician before use, especially if pregnant, nursing, or on medication.</p>
+        </details>
+        <details>
+          <summary>Will I feel jittery?</summary>
+          <p>No. JupiterMind emphasizes balanced focus and calm clarity. Most users report a clean, steady experience.</p>
+        </details>
+        <details>
+          <summary>Do you ship internationally?</summary>
+          <p>We currently ship to the US, Canada, UK, Germany, and Australia.</p>
+        </details>
+        <details>
+          <summary>What is your refund policy?</summary>
+          <p>Try it risk-free for 30 days. If you’re not satisfied, contact support for a full refund.</p>
+        </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impressum -->
+    <section class="section section-alt" id="impressum">
+      <div class="container">
+        <h2>Impressum</h2>
+        <div class="impressum">
+          <div>
+            <strong>JupiterMind Labs</strong><br/>
+            Address disclosed on contact
+          </div>
+          <div>
+            <strong>Contact</strong><br/>
+            hello@jupitermind.com<br/>
+            +1 (555) 123-9876
+          </div>
+          <div>
+            <strong>Responsible for content</strong><br/>
+            J. Nova, Managing Director
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky mobile buy bar -->
+  <div class="buy-bar" role="region" aria-label="Quick purchase">
+    <div class="container buy-bar-inner">
+      <div class="buy-price"><span class="currency">$</span><span class="amount">49</span><span class="cents">.99</span></div>
+      <a class="btn btn-primary" href="#pricing">Buy now</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container foot-inner">
+      <div>© <span id="year"></span> JupiterMind Labs</div>
+      <div class="foot-links">
+        <a href="#top">Back to top</a>
+        <a href="#impressum">Impressum</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
