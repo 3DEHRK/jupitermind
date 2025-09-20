@@ -64,6 +64,7 @@ function supportedCountries() {
  * Build Stripe shipping_options[] for a country in the session currency.
  * If sessionCurrency === 'eur', uses EUR amounts; otherwise converts using EUR_TO_USD_RATE env (default 1.1).
  * Free-shipping thresholds only apply when ENABLE_FREE_SHIPPING === 'true'.
+ * You can set a global threshold in USD via FREE_SHIPPING_THRESHOLD_USD to override per-country thresholds.
  * @param {string} country ISO alpha-2 country code
  * @param {string} sessionCurrency 'usd' | 'eur' | other
  * @param {number} subtotalCents line items subtotal in session currency cents
@@ -74,32 +75,53 @@ function buildShippingOptions(country, sessionCurrency, subtotalCents) {
   const isEUR = sessionCurrency.toLowerCase() === 'eur';
   const rate = isEUR ? 1 : Number(process.env.EUR_TO_USD_RATE || 1.1);
   const currency = isEUR ? 'eur' : 'usd';
-  const enableFree = String(process.env.ENABLE_FREE_SHIPPING || 'false').toLowerCase() === 'true';
+  const enableFree = String(process.env.ENABLE_FREE_SHIPPING || 'true').toLowerCase() === 'true';
+  const globalFreeUsdRaw = process.env.FREE_SHIPPING_THRESHOLD_USD;
+  const hasGlobalFree = globalFreeUsdRaw != null && globalFreeUsdRaw !== '' && isFinite(Number(globalFreeUsdRaw));
+  const globalFreeUsd = hasGlobalFree ? Number(globalFreeUsdRaw) : null;
+  const globalThresholdCents = hasGlobalFree
+    ? (isEUR ? Math.round((globalFreeUsd / rate) * 100) : Math.round(globalFreeUsd * 100))
+    : null;
   // Flat surcharge in USD (default $5), converted to session currency
   const usdSurcharge = Number(process.env.SHIPPING_SURCHARGE_USD || 5);
   const surchargeCents = Math.max(0, Math.round(usdSurcharge * 100 * (isEUR ? (1 / rate) : 1)));
-  return opts.map(o => ({
-    shipping_rate_data: {
-      type: 'fixed_amount',
-      display_name: o.name + (enableFree && o.freeFromEUR && qualifiesForFree(o.freeFromEUR, isEUR, rate, subtotalCents) ? ' — Free' : ''),
-      fixed_amount: (enableFree && qualifiesForFree(o.freeFromEUR, isEUR, rate, subtotalCents))
-        ? { amount: 0, currency }
-        : {
-            amount: Math.round(o.amountEUR * rate * 100) + surchargeCents,
-            currency
-          },
-      delivery_estimate: {
-        minimum: { unit: 'business_day', value: o.minDays },
-        maximum: { unit: 'business_day', value: o.maxDays }
+  return opts.map(o => {
+    // Per request: Canada is never free; others free at USD $110 equivalent when enabled
+    const forcedUsdThreshold = 110; // USD
+    const forcedFreeFromEUR = forcedUsdThreshold / rate; // convert USD→EUR equivalent
+    const freeThresholdEUR = country === 'CA' ? 999999 : forcedFreeFromEUR;
+    const qualifiesFree = enableFree && (hasGlobalFree
+      ? (globalThresholdCents != null && subtotalCents >= globalThresholdCents)
+      : qualifiesForFree(freeThresholdEUR, isEUR, rate, subtotalCents));
+
+    return {
+      shipping_rate_data: {
+        type: 'fixed_amount',
+        display_name: o.name + (qualifiesFree ? ' — Free' : ''),
+        fixed_amount: qualifiesFree
+          ? { amount: 0, currency }
+          : {
+              amount: Math.round(o.amountEUR * rate * 100) + surchargeCents,
+              currency
+            },
+        delivery_estimate: {
+          minimum: { unit: 'business_day', value: o.minDays },
+          maximum: { unit: 'business_day', value: o.maxDays }
+        }
       }
-    }
-  }));
+    };
+  });
 }
 
 function qualifiesForFree(freeFromEUR, isEUR, rate, subtotalCents) {
   if (freeFromEUR == null) return false;
   const thresholdCents = Math.round((isEUR ? freeFromEUR : freeFromEUR * rate) * 100);
   return subtotalCents >= thresholdCents;
+}
+
+function isFree(option, isEUR, rate, subtotalCents, hasGlobalFree, globalThresholdCents){
+  if (hasGlobalFree && globalThresholdCents != null) return subtotalCents >= globalThresholdCents;
+  return qualifiesForFree(option.freeFromEUR, isEUR, rate, subtotalCents);
 }
 
 module.exports = { SHIPPING_RATES_EUR, supportedCountries, buildShippingOptions };
