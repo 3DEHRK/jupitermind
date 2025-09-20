@@ -76,7 +76,7 @@ function buildShippingOptions(country, sessionCurrency, subtotalCents) {
   const currency = isEUR ? 'eur' : 'usd';
   const enableFree = String(process.env.ENABLE_FREE_SHIPPING || 'false').toLowerCase() === 'true';
   // Flat surcharge in USD (default $5), converted to session currency
-  const usdSurcharge = Number(process.env.SHIPPING_SURCHARGE_USD || 4);
+  const usdSurcharge = Number(process.env.SHIPPING_SURCHARGE_USD || 5);
   const surchargeCents = Math.max(0, Math.round(usdSurcharge * 100 * (isEUR ? (1 / rate) : 1)));
   return opts.map(o => ({
     shipping_rate_data: {
