@@ -103,7 +103,7 @@
             <h2>JupiterMind</h2>
             <p>60 capsules · 30 servings</p>
           </div>
-          <div class="pc-price" id="displayPrice" data-one-time="10900" data-subscription="9900">
+          <div class="pc-price" id="displayPrice" data-one-time="10900" data-subscription="9900" data-micro="4900">
             <span class="currency">$</span>
             <span class="amount" id="priceAmount">109</span>
             <span class="cents" id="priceCents">.00</span>
@@ -115,11 +115,23 @@
               <span>One-time</span>
               <strong class="price-label">$109.00</strong>
             </label>
+            <!-- Temporarily disabled subscription option
             <label class="toggle-option">
               <input type="radio" name="purchaseType" value="subscription">
               <span>Subscribe</span>
               <strong class="price-label">$99.00/mo</strong>
             </label>
+            -->
+              <label class="toggle-option toggle-option--stacked">
+                <div class="option-row">
+                  <div class="left">
+                    <input type="radio" name="purchaseType" value="micro">
+                    <span>Micro</span>
+                  </div>
+                  <strong class="price-label">$49.00</strong>
+                </div>
+                <span class="option-sub">stripped down budget friendly version</span>
+              </label>
           </div>
           <ul class="pc-list">
             <li>Free shipping over $110</li>

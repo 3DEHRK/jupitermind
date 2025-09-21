@@ -106,6 +106,11 @@ body{
 .toggle-option input{appearance:none; width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.4); display:inline-block; position:relative}
 .toggle-option input:checked{border-color:transparent; background:radial-gradient(circle at 50% 50%, #fff 0 40%, var(--brand) 41% 100%)}
 .toggle-option .price-label{color:var(--text)}
+.toggle-option .option-sub{display:block; font-size:12px; color:var(--muted)}
+.toggle-option--stacked{display:block}
+.toggle-option--stacked .option-row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.toggle-option--stacked .left{display:flex; align-items:center; gap:10px}
+.toggle-option--stacked .option-sub{margin-top:4px}
 .pc-qty{display:flex; align-items:center; gap:10px; margin:10px 0 16px}
 #qty{width:84px; padding:10px; border-radius:12px; background:#0c1320; color:var(--text); border:1px solid rgba(255,255,255,.1)}
 .pc-country{display:flex; align-items:center; gap:10px; margin:10px 0 16px}
